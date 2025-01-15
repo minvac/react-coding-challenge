@@ -3,7 +3,20 @@ import useFetchFacts from "@/hooks/useFetchFacts";
 import useFetchPeople from "@/hooks/useFetchPeople";
 import PeopleCard from "./PeopleCard";
 
+type Fact = {
+  fact: string;
+};
+
+type Page = {
+  data: Fact[];
+};
+
+type DataFacts = {
+  pages: Page[];
+};
+
 const CardList: React.FC = () => {
+
 
   const { data: dataFacts, isLoading: isLoadingFacts, error: errorFacts, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchFacts();
 
