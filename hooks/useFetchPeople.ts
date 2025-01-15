@@ -3,7 +3,6 @@ import axios from "axios";
 
 interface PeopleCard {
   name: {
-    title: string;
     first: string;
     last: string;
   };
@@ -12,27 +11,24 @@ interface PeopleCard {
   };
 }
 
-const fetchPerson = async (): Promise<PeopleCard> => {
-  try {
-    const response = await axios.get(`https://randomuser.me/api?results=1`);
-    console.log(response);
-
-    const person = response.data.results[0];
-    return {
-      name: person.name,
-      picture: person.picture,
-    };
-  } catch (error) {
-    console.error("Error fetching person:", error);
-    throw error;
-  }
+const fetchPerson = async (): Promise<PeopleCard[]> => {
+  const response = await axios.get(`https://randomuser.me/api?results=1`);
+  return response.data.results.map((person: any) => ({
+    name: {
+      first: person.name.first,
+      last: person.name.last,
+    },
+    picture: {
+      thumbnail: person.picture.thumbnail,
+    },
+  }));
 };
 
-const useFetchPerson = () => {
-  return useQuery<PeopleCard, Error>({
+const useFetchPeople = () => {
+  return useQuery<PeopleCard[], Error>({
     queryKey: ["person"],
     queryFn: fetchPerson,
   });
 };
 
-export default useFetchPerson;
+export default useFetchPeople;
