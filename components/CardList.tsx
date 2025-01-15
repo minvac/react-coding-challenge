@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import useFetchFacts from "@/hooks/useFetchFacts";
 import PeopleCard from "./PeopleCard";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const CardList: React.FC = () => {
   const { data: dataFacts, isLoading: isLoadingFacts, error: errorFacts, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchFacts();
@@ -12,7 +14,15 @@ const CardList: React.FC = () => {
   }, [errorFacts]);
 
   if (isLoadingFacts) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center bg-striped">
+        <div className="w-full sm:w-4/5 md:w-3/5 bg-gray-100 p-4 m-2 rounded min-h-screen border-2">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <Skeleton key={index} height={100} className="mb-4" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (

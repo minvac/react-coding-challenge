@@ -1,4 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import useFetchPeople from '@/hooks/useFetchPeople';
 
 interface CharacterProps {
@@ -7,10 +9,22 @@ interface CharacterProps {
 }
 
 const PeopleCard: FC<CharacterProps> = ({ description, index }) => {
-  const { data: person, isLoading, error } = useFetchPeople(index);
+  const { data: person, isLoading, error, refetch } = useFetchPeople(index);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="p-4 bg-white border border-gray-200 rounded-lg shadow text-left gap-2 min-w-[300px] min-h-[150px] mt-4 sm:min-w-[200px] sm:min-h-[100px] md:min-w-[250px] md:min-h-[120px] lg:min-w-[300px] lg:min-h-[150px]">
+        <div className='flex items-center gap-2 mb-2'>
+          <Skeleton circle width={42} height={42} />
+          <Skeleton width={100} height={20} />
+        </div>
+        <Skeleton count={3} />
+      </div>
+    );
   }
 
   if (error) {
