@@ -1,20 +1,13 @@
-import { FC, useEffect } from 'react';
-// import Skeleton from 'react-loading-skeleton'
-// import 'react-loading-skeleton/dist/skeleton.css'
+import React, { FC } from 'react';
 import useFetchPeople from '@/hooks/useFetchPeople';
 
 interface CharacterProps {
   description: string;
+  index: number;
 }
 
-const PeopleCard: FC<CharacterProps> = ({ description }) => {
-
-  const { data: people, isLoading, error, refetch } = useFetchPeople();
-
-  useEffect(() => {
-    refetch();
-
-  }, [refetch]);
+const PeopleCard: FC<CharacterProps> = ({ description, index }) => {
+  const { data: person, isLoading, error } = useFetchPeople(index);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,11 +17,9 @@ const PeopleCard: FC<CharacterProps> = ({ description }) => {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!people || people.length === 0) {
-    return <div>No people found</div>;
+  if (!person) {
+    return <div>No person found</div>;
   }
-
-  const person = people[0];
 
   return (
     <div className="p-4 bg-white border border-gray-200 rounded-lg shadow text-left gap-2 min-w-[300px] min-h-[150px] mt-4 sm:min-w-[200px] sm:min-h-[100px] md:min-w-[250px] md:min-h-[120px] lg:min-w-[300px] lg:min-h-[150px]">
@@ -40,7 +31,7 @@ const PeopleCard: FC<CharacterProps> = ({ description }) => {
       </div>
       <p className="font-normal text-gray-700 dark:text-gray-400">{description}</p>
     </div>
-  )
+  );
 }
 
 export default PeopleCard;

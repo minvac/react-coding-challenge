@@ -11,9 +11,10 @@ interface PeopleCard {
   };
 }
 
-const fetchPerson = async (): Promise<PeopleCard[]> => {
+const fetchPerson = async (index: number): Promise<PeopleCard> => {
   const response = await axios.get(`https://randomuser.me/api?results=1`);
-  return response.data.results.map((person: any) => ({
+  const person = response.data.results[0];
+  return {
     name: {
       first: person.name.first,
       last: person.name.last,
@@ -21,14 +22,17 @@ const fetchPerson = async (): Promise<PeopleCard[]> => {
     picture: {
       thumbnail: person.picture.thumbnail,
     },
-  }));
+  };
 };
 
-const useFetchPeople = () => {
-  return useQuery<PeopleCard[], Error>({
-    queryKey: ["person"],
-    queryFn: fetchPerson,
+const useFetchPerson = (index: number) => {
+  return useQuery<PeopleCard, Error>({
+    queryKey: ["person", index],
+    queryFn: () => fetchPerson(index),
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
-export default useFetchPeople;
+export default useFetchPerson;

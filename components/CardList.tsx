@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useFetchFacts from "@/hooks/useFetchFacts";
-import useFetchPeople from "@/hooks/useFetchPeople";
 import PeopleCard from "./PeopleCard";
 
 const CardList: React.FC = () => {
-
   const { data: dataFacts, isLoading: isLoadingFacts, error: errorFacts, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchFacts();
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const CardList: React.FC = () => {
         {dataFacts?.pages.map((page, pageIndex) => (
           <div key={pageIndex}>
             {page.data.map((fact, factIndex) => (
-              <PeopleCard key={factIndex} description={fact.fact} />
+              <PeopleCard key={factIndex} description={fact.fact} index={factIndex} />
             ))}
           </div>
         ))}
