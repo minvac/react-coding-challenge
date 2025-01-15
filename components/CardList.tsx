@@ -23,14 +23,16 @@ const CardList: React.FC = () => {
         {dataFacts?.pages.map((page, pageIndex) => (
           <div key={pageIndex}>
             {page.data.map((fact, factIndex) => (
-              <p key={factIndex}>{fact.fact}</p>
+              <PeopleCard key={factIndex} description={fact.fact} />
             ))}
           </div>
         ))}
         {hasNextPage && (
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? "Loading more..." : "Load More"}
-          </button>
+          <div className="flex justify-center">
+            <button className={`bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded ${isFetchingNextPage ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+              {isFetchingNextPage ? "Loading more..." : "Load More"}
+            </button>
+          </div>
         )}
       </div>
     </div>
