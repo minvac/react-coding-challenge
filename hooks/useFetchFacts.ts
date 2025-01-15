@@ -21,19 +21,6 @@ type UseFetchFactsResult = {
   isFetchingNextPage: boolean;
 };
 
-
-type Fact = {
-  fact: string;
-};
-
-type Page = {
-  data: Fact[];
-};
-
-type DataFacts = {
-  pages: Page[];
-};
-
 const fetchFacts = async ({ pageParam = 1 }): Promise<FetchFactsResponse> => {
   try {
     const response = await axios.get(`https://catfact.ninja/facts?page=${pageParam}`);
